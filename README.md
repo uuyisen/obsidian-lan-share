@@ -1,4 +1,4 @@
-# 局域网分享（LAN Share）
+# LAN Share
 
 在局域网内把 Obsidian 笔记分享给朋友：浏览器打开链接即可**只读预览**，支持 Obsidian MD 语法、双链 `[[...]]`、嵌入图片与 mermaid 图表。朋友端零安装，无需任何客户端。
 
@@ -16,13 +16,13 @@
 
 ### 方法一：Obsidian 社区插件（推荐）
 
-在 Obsidian 设置的「第三方插件 → 社区插件」中搜索 **局域网分享** 并安装启用。
+在 Obsidian 设置的「第三方插件 → 社区插件」中搜索 **LAN Share** 并安装启用。
 
 ### 方法二：手动安装
 
 1. 下载最新版本的 `main.js`、`manifest.json`、`styles.css`（Release 附件）
 2. 放入 vault 的 `.obsidian/plugins/lan-share/` 目录
-3. 在 Obsidian 设置中启用「局域网分享」
+3. 在 Obsidian 设置中启用「LAN Share」
 
 ## 使用
 
@@ -76,7 +76,7 @@ npm run deploy     # 部署到 vault 的 .obsidian/plugins/lan-share
 3. 打 tag 并推送：`git tag 0.1.0 && git push origin 0.1.0`（tag 必须与 `manifest.json` 的 `version` 完全一致）
 4. GitHub Actions 自动构建并把 `main.js / manifest.json / styles.css` 附带为 release 附件
 5. 登录 [community.obsidian.md](https://community.obsidian.md)（Obsidian 账号），在设置中 **Connect** GitHub 账号（只读验证仓库所有权）
-6. 在 **Plugins → New plugin** 提交仓库 URL，等待官方审核；审核通过后即可在 Obsidian 社区插件市场搜索到「局域网分享」
+6. 在 **Plugins → New plugin** 提交仓库 URL，等待官方审核；审核通过后即可在 Obsidian 社区插件市场搜索到「LAN Share」
 
 > 准备已就绪：`.github/workflows/release.yml` 自动发布、`manifest.json`/`versions.json` 已符合官方约束、README/LICENSE 齐全。
 
