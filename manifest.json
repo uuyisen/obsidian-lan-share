@@ -1,7 +1,7 @@
 {
   "id": "lan-share",
   "name": "LAN Share",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minAppVersion": "1.4.0",
   "description": "Share notes with friends over your local network. Friends open a link in any browser for read-only previews with wikilinks, embedded images, and Mermaid diagrams.",
   "author": "yjh",
