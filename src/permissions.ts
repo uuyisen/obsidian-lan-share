@@ -1,5 +1,5 @@
 import type { HttpResponse } from "./types.ts";
-import { randomBytes } from "node:crypto";
+import { randomBytes } from "crypto";
 
 /** 生成随机令牌（256-bit hex） */
 export function generateToken(): string {
