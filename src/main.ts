@@ -9,6 +9,18 @@ import { startServer } from "./server.ts";
 import type { RouterDeps } from "./types.ts";
 import { generateToken } from "./permissions.ts";
 import { LanShareSettingTab } from "./settings.ts";
+// 内嵌前端静态资源：构建时由 esbuild 以 ?raw 打进 bundle，
+// 使社区版安装（仅含 main.js/manifest.json/styles.css）也能自包含渲染 mermaid。
+import mermaidMin from "../vendor/mermaid.min.js?raw";
+import mermaidInit from "../vendor/mermaid-init.js?raw";
+import siteJs from "../vendor/site.js?raw";
+
+/** 内嵌资源表：优先从内存提供，磁盘缺失时也能工作 */
+const EMBEDDED_VENDOR: Record<string, string> = {
+  "mermaid.min.js": mermaidMin,
+  "mermaid-init.js": mermaidInit,
+  "site.js": siteJs,
+};
 
 export default class LanSharePlugin extends Plugin {
   data: PluginData = structuredClone(DEFAULT_DATA);
@@ -98,8 +110,12 @@ export default class LanSharePlugin extends Plugin {
     this.updateStatusBar();
   }
 
-  /** 从插件安装目录读取 vendored 资源（mermaid.min.js / mermaid-init.js） */
+  /** 提供 vendored 资源：优先内嵌内存（社区版自包含），回退插件目录文件（本地部署） */
   private async readVendor(name: string): Promise<Uint8Array | null> {
+    const embedded = EMBEDDED_VENDOR[name];
+    if (embedded !== undefined) {
+      return new TextEncoder().encode(embedded);
+    }
     try {
       const dir = (this.manifest as { dir?: string }).dir;
       if (!dir) return null;

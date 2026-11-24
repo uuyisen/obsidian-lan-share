@@ -1,5 +1,9 @@
 # LAN Share
 
+**LAN Share** makes your Obsidian notes readable by friends over a local network, with zero installation on their side. Anyone with the link can open a read-only preview in their browser, including wikilinks `[[...]]`, embedded images, and Mermaid diagrams.
+
+---
+
 在局域网内把 Obsidian 笔记分享给朋友：浏览器打开链接即可**只读预览**，支持 Obsidian MD 语法、双链 `[[...]]`、嵌入图片与 mermaid 图表。朋友端零安装，无需任何客户端。
 
 ## 特性

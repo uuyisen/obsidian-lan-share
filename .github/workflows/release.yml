@@ -34,13 +34,8 @@ jobs:
         run: |
           mkdir -p release
           # 插件必需三个文件：main.js / manifest.json / styles.css
+          # （前端静态资源已内嵌进 main.js，社区安装即可自包含运行）
           cp main.js manifest.json styles.css release/
-          # 打包 vendor 静态资源（mermaid、前端脚本）
-          cp -r vendor release/vendor
-          cd release
-          zip -r ../lan-share.zip .
-          cd ..
           gh release create "$GITHUB_REF_NAME" \
             release/main.js release/manifest.json release/styles.css \
-            lan-share.zip \
             --title "$GITHUB_REF_NAME" --generate-notes

@@ -3,7 +3,7 @@
   "name": "LAN Share",
   "version": "0.1.0",
   "minAppVersion": "1.4.0",
-  "description": "在局域网内把 Obsidian 笔记分享给朋友：浏览器打开链接即可只读预览，支持 Markdown、双链、嵌入图片与 Mermaid 图表。",
+  "description": "Share notes with friends over your local network. Friends open a link in any browser for read-only previews with wikilinks, embedded images, and Mermaid diagrams.",
   "author": "yjh",
   "authorUrl": "",
   "isDesktopOnly": true

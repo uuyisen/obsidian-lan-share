@@ -19,3 +19,14 @@ declare module "markdown-it-mark" {
   const plugin: (md: MarkdownIt, options?: MarkOptions) => void;
   export default plugin;
 }
+
+/** esbuild ?raw 导入：把 vendor 静态资源作为字符串打进 bundle */
+declare module "*.min.js?raw" {
+  const content: string;
+  export default content;
+}
+
+declare module "*.js?raw" {
+  const content: string;
+  export default content;
+}
