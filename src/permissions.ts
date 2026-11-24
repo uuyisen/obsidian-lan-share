@@ -32,8 +32,10 @@ export function isSafePathSegment(seg: string): boolean {
  * 将请求中的路径段规范化成 vault 相对路径。
  * 输入已是 decodeURIComponent 后的原始路径（router 层解码）。
  * 返回 null 表示非法（含穿越、绝对路径、隐藏目录等）。
+ * hidden 为根级隐藏目录名（如 ".obsidian"），由调用方从 Vault#configDir 获取，
+ * 不硬编码——用户可自定义配置目录位置。
  */
-export function normalizeVaultPath(rawPath: string, hidden: string[] = [".obsidian", ".trash"]): string | null {
+export function normalizeVaultPath(rawPath: string, hidden: string[] = []): string | null {
   const segments = rawPath.split("/");
   if (segments.length === 0) return null;
   const out: string[] = [];
@@ -63,8 +65,8 @@ export function isPathShared(path: string, shares: { path: string; type: "file" 
   return false;
 }
 
-/** 从查询中对路径参数做安全规范，非法返回 null */
-export function safeQueryPath(raw: string | null): string | null {
+/** 从查询中对路径参数做安全规范，非法返回 null；hidden 为根级隐藏目录名 */
+export function safeQueryPath(raw: string | null, hidden: string[] = []): string | null {
   if (raw === null) return null;
   let decoded: string;
   try {
@@ -72,7 +74,7 @@ export function safeQueryPath(raw: string | null): string | null {
   } catch {
     return null;
   }
-  return normalizeVaultPath(decoded.replace(/^\/+/, ""));
+  return normalizeVaultPath(decoded.replace(/^\/+/, ""), hidden);
 }
 
 /** 统一错误响应 */

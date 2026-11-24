@@ -48,7 +48,9 @@ export class Router {
   }
 
   private async route(path: string, req: RequestLike, token: string): Promise<HttpResponse> {
-    const data = this.deps.getData();
+    // 根级隐藏目录（默认 ".obsidian"、".trash"），取自用户实际配置目录而非硬编码
+    const configDir = await this.deps.vault.configDir().catch(() => ".obsidian");
+    const hidden = [configDir, ".trash"];
 
     // 本地静态资源（前端脚本），仅白名单三个文件
     if (
@@ -69,14 +71,14 @@ export class Router {
     // /n/<vault 相对路径>：笔记渲染页
     const noteMatch = path.match(/^\/n\/(.+)$/);
     if (noteMatch) {
-      const notePath = safeQueryPath(noteMatch[1]);
+      const notePath = safeQueryPath(noteMatch[1], hidden);
       if (!notePath) return err(400, "非法路径");
       return this.note(token, notePath);
     }
 
     // /asset?path=<vault 相对路径>：附件（图片）只读
     if (path === "/asset") {
-      const assetPath = safeQueryPath(req.query.get("path"));
+      const assetPath = safeQueryPath(req.query.get("path"), hidden);
       if (!assetPath) return err(400, "非法路径");
       return this.asset(token, assetPath);
     }

@@ -6,6 +6,7 @@ import type { VaultLike } from "./types.ts";
  */
 export function createObsidianVault(app: {
   vault: {
+    configDir: string;
     getAbstractFileByPath(path: string): { name?: string; path: string; extension?: string } | null;
     cachedRead(file: unknown): Promise<string>;
     adapter: {
@@ -75,6 +76,11 @@ export function createObsidianVault(app: {
       } catch {
         return null;
       }
+    },
+
+    async configDir(): Promise<string> {
+      // Vault#configDir：用户可自定义配置目录位置，禁止硬编码 ".obsidian"
+      return vault.configDir || ".obsidian";
     },
   };
 }

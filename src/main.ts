@@ -31,7 +31,7 @@ export default class LanSharePlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.readPersistedData();
-    this.vaultLike = createObsidianVault(this.app as never);
+    this.vaultLike = createObsidianVault(this.app);
 
     this.addSettingTab(new LanShareSettingTab(this.app, this));
 
@@ -314,8 +314,11 @@ export default class LanSharePlugin extends Plugin {
   }
 
   private refreshLeafButton(leaf?: WorkspaceLeaf | null): void {
-    const view = (leaf ?? this.app.workspace.activeLeaf)?.view;
-    if (!view || !(view instanceof MarkdownView)) return;
+    // 优先使用事件回调携带的 leaf；无回调时回退到当前活动视图（避免弃用的 activeLeaf）
+    let view: MarkdownView | null = null;
+    if (leaf) view = leaf.view instanceof MarkdownView ? leaf.view : null;
+    if (!view) view = this.app.workspace.getActiveViewOfType(MarkdownView);
+    if (!view) return;
     const old = this.actionButtons.get(view);
     if (old) old.detach();
 

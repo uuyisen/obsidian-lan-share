@@ -42,6 +42,8 @@ export interface VaultLike {
   resolveLink(linktext: string, sourcePath: string): Promise<string | null>;
   /** 返回文件内容大小 */
   statSize(path: string): Promise<number | null>;
+  /** Obsidian 配置目录名（如 ".obsidian"），可能被用户自定义；用于隐藏目录访问保护 */
+  configDir(): Promise<string>;
 }
 
 /** 路由依赖：数据 + vault 抽象 + 页面资源读取（本地 vendored 静态资源） */

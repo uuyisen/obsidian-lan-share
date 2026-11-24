@@ -157,7 +157,7 @@ export class LanShareSettingTab extends PluginSettingTab {
       actions.createEl("button", { text: "打开笔记" }).addEventListener("click", () => {
         const abstract = this.app.vault.getAbstractFileByPath(share.path);
         if (abstract && abstract instanceof TFile) {
-          void this.app.workspace.getLeaf(true).openFile(abstract as never);
+          void this.app.workspace.getLeaf(true).openFile(abstract);
         }
       });
     }
@@ -180,12 +180,12 @@ export class LanShareSettingTab extends PluginSettingTab {
     const folders = children.folders;
     for (const f of files) {
       const row = container.createDiv({ cls: "lan-share-tree-row" });
-      row.style.paddingLeft = String(depth * 14) + "px";
+      row.setAttribute("data-depth", String(depth));
       row.setText(f.split("/").pop() || f);
     }
     for (const sub of folders.slice(0, 20)) {
       const row = container.createDiv({ cls: "lan-share-tree-row" });
-      row.style.paddingLeft = String(depth * 14) + "px";
+      row.setAttribute("data-depth", String(depth));
       row.setText(sub.split("/").pop() || sub);
       const child = container.createDiv();
       await this.renderFolderTree(child, sub, depth + 1);

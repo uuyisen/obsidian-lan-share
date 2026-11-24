@@ -67,4 +67,8 @@ export class MockVault implements VaultLike {
     if (v === undefined) return null;
     return v instanceof Uint8Array ? v.byteLength : v.length;
   }
+
+  async configDir(): Promise<string> {
+    return ".obsidian";
+  }
 }

@@ -70,3 +70,20 @@
 .lan-share-tree-row {
   line-height: 1.7;
 }
+
+/* 目录树缩进：深度由 data-depth 属性驱动，避免 JS 内联样式（推荐通过 createEl 与 CSS 完成） */
+.lan-share-tree-row[data-depth="1"] {
+  padding-left: 14px;
+}
+.lan-share-tree-row[data-depth="2"] {
+  padding-left: 28px;
+}
+.lan-share-tree-row[data-depth="3"] {
+  padding-left: 42px;
+}
+.lan-share-tree-row[data-depth="4"] {
+  padding-left: 56px;
+}
+.lan-share-tree-row[data-depth="5"] {
+  padding-left: 70px;
+}
