@@ -1,4 +1,5 @@
 import type { HttpResponse } from "./types.ts";
+import { randomBytes } from "node:crypto";
 
 /** 生成随机令牌（256-bit hex） */
 export function generateToken(): string {
@@ -8,7 +9,7 @@ export function generateToken(): string {
     return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
   }
   // 兜底：Node 环境
-  return require("crypto").randomBytes(32).toString("hex");
+  return randomBytes(32).toString("hex");
 }
 
 /** 常量时间的令牌比较：杜绝时序侧信道；长度不同直接返回 false 不等 */

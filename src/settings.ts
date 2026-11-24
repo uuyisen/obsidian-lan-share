@@ -10,13 +10,13 @@ export class LanShareSettingTab extends PluginSettingTab {
   display(): void {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "局域网分享" });
+    new Setting(containerEl).setName("局域网分享").setHeading();
     containerEl.createEl("p", {
       text: "把笔记以只读预览方式分享给同一局域网的朋友：浏览器打开链接即看，支持 Obsidian MD、双链、图片与 mermaid。",
     });
 
     // ------------------------------------------------------------ 服务控制
-    containerEl.createEl("h3", { text: "服务控制" });
+    new Setting(containerEl).setName("服务控制").setHeading();
     const statusText = this.plugin.isRunning ? "● 运行中" : "○ 已停止（插件加载不会自动开启）";
     new Setting(containerEl)
       .setName("服务状态")
@@ -96,7 +96,7 @@ export class LanShareSettingTab extends PluginSettingTab {
     }
 
     // ------------------------------------------------------------ 令牌
-    containerEl.createEl("h3", { text: "访问令牌" });
+    new Setting(containerEl).setName("访问令牌").setHeading();
     new Setting(containerEl)
       .setName("当前令牌")
       .setDesc("链接中携带此令牌校验访问权限；重置后所有旧链接立即失效")
@@ -115,7 +115,7 @@ export class LanShareSettingTab extends PluginSettingTab {
       );
 
     // ------------------------------------------------------------ 分享列表
-    containerEl.createEl("h3", { text: "当前分享（" + this.plugin.data.shares.length + "）" });
+    new Setting(containerEl).setName(`当前分享（${this.plugin.data.shares.length}）`).setHeading();
     const list = containerEl.createDiv({ cls: "lan-share-list" });
 
     if (this.plugin.data.shares.length === 0) {
