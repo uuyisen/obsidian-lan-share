@@ -46,7 +46,10 @@ jobs:
       - name: Attest build provenance
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: release/main.js release/manifest.json release/styles.css
+          subject-path: |
+            release/main.js
+            release/manifest.json
+            release/styles.css
 
       - name: Post-release verification
         env:
