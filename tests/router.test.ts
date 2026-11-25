@@ -193,15 +193,18 @@ test("首页含侧栏目录树", async () => {
   assert.ok(r.body!.includes('class="tree"'));
 });
 
-test("页面无 emoji、无返回首页、含折叠控件与 site.js", async () => {
+test("页面无 emoji、笔记页左上角有主页入口、含折叠控件与 site.js", async () => {
   const { router } = makeDeps();
   const r = await router.handle(req("GET", "/n/" + encodeURIComponent(LOCAL_MD)));
   assert.equal(r.status, 200);
-  // 无 emoji（📄/📁/🏠/📖）与"返回首页"
+  // 无 emoji（📄/📁/🏠/📖）与"返回首页"文案（主页入口用 SVG + "主页"）
   for (const emoji of ["📄", "📁", "🏠", "📖", "🔗", "🔕"]) {
     assert.ok(!r.body!.includes(emoji), "不应含 emoji: " + emoji);
   }
   assert.ok(!r.body!.includes("返回首页"));
+  // 笔记页应有主页入口（指向分享列表首页）
+  assert.ok(r.body!.includes('class="home-link"'), "笔记页应有主页入口");
+  assert.ok(r.body!.includes('href="/?t='), "主页入口应带 token 指向首页");
   // 折叠控件
   assert.ok(r.body!.includes('data-toggle="sidebar"'));
   assert.ok(r.body!.includes('data-toggle="outline"'));
@@ -210,9 +213,11 @@ test("页面无 emoji、无返回首页、含折叠控件与 site.js", async () 
   assert.ok(r.body!.includes("/vendor/site.js"));
 });
 
-test("首页无语义 emoji 与返回首页", async () => {
+test("首页无语义 emoji 且不显示主页入口（避免自链接）", async () => {
   const { router } = makeDeps();
   const r = await router.handle(req("GET", "/"));
   assert.ok(!r.body!.includes("返回首页"));
   assert.ok(!r.body!.includes("📖"));
+  // 首页本身就是主页，不应出现指向自身的主页入口
+  assert.ok(!r.body!.includes('class="home-link"'));
 });

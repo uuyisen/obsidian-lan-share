@@ -24,6 +24,8 @@ const ICON_SIDEBAR =
   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>';
 const ICON_OUTLINE =
   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>';
+const ICON_HOME =
+  '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>';
 
 function pageShell(opts: {
   title: string;
@@ -31,9 +33,16 @@ function pageShell(opts: {
   token: string;
   sidebarHtml: string;
   outlineHtml: string;
+  /** 是否为首页自身：首页不显示"主页"入口，避免自我链接 */
+  isHome?: boolean;
 }): string {
-  const { title, body, token, sidebarHtml, outlineHtml } = opts;
+  const { title, body, token, sidebarHtml, outlineHtml, isHome } = opts;
   const hasOutline = outlineHtml.length > 0;
+  const homeLink = isHome
+    ? ""
+    : `<a class="home-link" href="/?t=${encodeURIComponent(token)}" title="返回主页" aria-label="返回主页">
+        ${ICON_HOME}<span>主页</span>
+      </a>`;
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -90,6 +99,12 @@ body.sidebar-collapsed.outline-collapsed .layout.has-outline { grid-template-col
   background: transparent; color: #888; cursor: pointer;
 }
 .toolbar button:hover { background: rgba(128,128,128,.12); color: inherit; }
+.toolbar .home-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 30px; padding: 0 10px; border-radius: 6px;
+  font-size: 13px; color: #888; text-decoration: none;
+}
+.toolbar .home-link:hover { background: rgba(128,128,128,.12); color: inherit; text-decoration: none; }
 .toolbar .spacer { flex: 1; }
 .track { font-size: 12px; color: #999; align-self: center; }
 
@@ -157,6 +172,7 @@ th, td { border: 1px solid rgba(128,128,128,.3); padding: 6px 10px; text-align: 
 
   <main class="content">
     <div class="toolbar">
+      ${homeLink}
       <button type="button" data-toggle="sidebar" title="折叠/展开目录" aria-label="折叠/展开目录">${ICON_SIDEBAR}</button>
       ${hasOutline ? `<button type="button" data-toggle="outline" title="折叠/展开大纲" aria-label="折叠/展开大纲">${ICON_OUTLINE}</button>` : ""}
       <span class="spacer"></span>
@@ -234,7 +250,7 @@ ${g.items
   const body = `
 <h1>${ICON_NOTE}<span>全部内容</span></h1>
 ${sections || '<p class="empty-tip">当前没有分享任何内容。</p>'}`;
-  return pageShell({ title: "全部内容", token, sidebarHtml, outlineHtml: "", body });
+  return pageShell({ title: "全部内容", token, sidebarHtml, outlineHtml: "", body, isHome: true });
 }
 
 /** 笔记渲染页 */

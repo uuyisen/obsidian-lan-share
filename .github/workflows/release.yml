@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   build:
@@ -39,3 +41,16 @@ jobs:
           gh release create "$GITHUB_REF_NAME" \
             release/main.js release/manifest.json release/styles.css \
             --title "$GITHUB_REF_NAME" --generate-notes
+
+      # 供应链签章：证明 release 附件确由本仓库源码构建（社区审核要求的安全增强）
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: release/main.js release/manifest.json release/styles.css
+
+      - name: Post-release verification
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh attestation verify release/main.js --repo "${{ github.repository }}"
+
